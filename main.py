@@ -10,6 +10,7 @@ import glob
 # graph 
 import matplotlib.pyplot as plt
 
+outputFile = open("output.txt", "w")
 
 def getImageData(path):
   image = Image.open(path)
@@ -47,6 +48,10 @@ def test(paths, network, target):
     print(path)
     result = network.activate(getImageData(path))
     print(result)
+
+    for r in result:
+      outputFile.write(str(f"{r}, "))
+    outputFile.write(f" - {path}\n")
 
     count = 0
     for res in result:
@@ -118,4 +123,7 @@ rightAswns = 0
 rightAswns += test(lubrificatedImgs, network, 1)
 rightAswns += test(notLubrificatedImgs, network, 0)
 
-print("PERCENTUAL DE ACERTO: ", str((rightAswns/total)*100))
+rightPercentage = (rightAswns/total)*100
+print("PERCENTUAL DE ACERTO: ", str(rightPercentage))
+
+outputFile.write(f"\n PERCENTUAL DE ACERTO: {rightPercentage}%")
